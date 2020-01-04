@@ -3,18 +3,16 @@ package com.example.urbandictionaryapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -24,17 +22,13 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private TextView resultsTextView;
+    private StringBuilder TextToSet;
+    private EditText editText;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        resultsTextView = findViewById(R.id.resultsTextView);
+    public void searchWord(View view){
         OkHttpClient client = new OkHttpClient();
-
-        String url = "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term=wat";
-
+        String url = "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term="+editText.getText();
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -42,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
                 .addHeader("x-rapidapi-key", "ce94ee3a7dmsh3a4f7acb7d26343p15a639jsn7e4b97caf03d")
                 .build();
 
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
@@ -55,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject Jobject = new JSONObject(jsonData);
                         JSONArray Jarray = Jobject.getJSONArray("list");
-                        Log.i("XD", String.valueOf(Jarray));
+                        StringBuilder total = new StringBuilder();
 
                         int limit = Jarray.length();
                         for (int i = 0; i < limit; i++) {
@@ -65,22 +59,35 @@ public class MainActivity extends AppCompatActivity {
                             String example = object.getString("example");
 
                             Log.i("JSON", word+" " +definition);
+
+                            TextToSet = total.append(i+1 + ". " + definition + "\t" +"\n");
                         }
+                        Log.d("TOTAL", total.toString());
 
-
-                        } catch (JSONException e) {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
 
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            resultsTextView.setText(jsonData);
+                            resultsTextView.setMovementMethod(new ScrollingMovementMethod());
+                            resultsTextView.setText(TextToSet);
                         }
                     });
                 }
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        resultsTextView = findViewById(R.id.resultsTextView);
+        editText = findViewById(R.id.editText);
+
     }
 }
