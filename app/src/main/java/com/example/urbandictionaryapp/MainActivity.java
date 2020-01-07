@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultsTextView;
     private StringBuilder TextToSet;
     private EditText editText;
+    private TextView wordTextView;
+    private String WordToSet;
 
 
     public void searchWord(View view){
@@ -60,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
                             Log.i("JSON", word+" " +definition);
 
-                            TextToSet = total.append(i+1 + ". " + definition + "\t" +"\n");
+                            TextToSet = total.append(i+1 + ")  " + definition + "\n\n");
+                            WordToSet = word;
                         }
                         Log.d("TOTAL", total.toString());
 
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             resultsTextView.setMovementMethod(new ScrollingMovementMethod());
                             resultsTextView.setText(TextToSet);
+                            wordTextView.setText(WordToSet);
                         }
                     });
                 }
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         resultsTextView = findViewById(R.id.resultsTextView);
         editText = findViewById(R.id.editText);
+        wordTextView = findViewById(R.id.wordTextView);
 
     }
 }
