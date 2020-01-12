@@ -2,7 +2,9 @@ package com.example.urbandictionaryapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -26,9 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private TextView wordTextView;
     private String WordToSet;
+    private MediaPlayer mp;
 
 
     public void searchWord(View view){
+        mp.start();
         OkHttpClient client = new OkHttpClient();
         String url = "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term="+editText.getText();
         Request request = new Request.Builder()
@@ -89,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         resultsTextView = findViewById(R.id.resultsTextView);
         editText = findViewById(R.id.editText);
         wordTextView = findViewById(R.id.wordTextView);
+        mp = MediaPlayer.create(this, R.raw.click);
 
     }
 }
