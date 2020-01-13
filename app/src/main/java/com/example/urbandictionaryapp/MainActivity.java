@@ -2,9 +2,10 @@ package com.example.urbandictionaryapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -29,20 +30,19 @@ public class MainActivity extends AppCompatActivity {
     private TextView wordTextView;
     private String WordToSet;
     private MediaPlayer mp;
+    private Button button;
+    private Editable textCaptured;
 
 
-    public void searchWord(View view){
-        mp.start();
+    public void ApiConnection(){
         OkHttpClient client = new OkHttpClient();
-        String url = "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term="+editText.getText();
+        String url = "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term="+textCaptured;
         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .addHeader("x-rapidapi-host", "mashape-community-urban-dictionary.p.rapidapi.com")
                 .addHeader("x-rapidapi-key", "ce94ee3a7dmsh3a4f7acb7d26343p15a639jsn7e4b97caf03d")
                 .build();
-
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -76,16 +76,30 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     MainActivity.this.runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void run() {
                             resultsTextView.setMovementMethod(new ScrollingMovementMethod());
-                            resultsTextView.setText(TextToSet);
-                            wordTextView.setText(WordToSet);
+                            if(textCaptured.toString().equals("")){
+                                resultsTextView.setText("Aww, sorry, looks like your input is empty.");
+                                wordTextView.setText(":(");
+
+                            }
+                            else{
+                                resultsTextView.setText(TextToSet);
+                                wordTextView.setText(WordToSet);
+                            }
+
                         }
                     });
                 }
             }
         });
+    }
+
+    public void searchWord(View view){
+        mp.start();
+        ApiConnection();
     }
 
     @Override
@@ -96,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
         resultsTextView = findViewById(R.id.resultsTextView);
         editText = findViewById(R.id.editText);
         wordTextView = findViewById(R.id.wordTextView);
+        button = findViewById(R.id.button);
         mp = MediaPlayer.create(this, R.raw.click);
-
+        textCaptured = editText.getText();
     }
 }
