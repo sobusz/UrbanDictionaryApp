@@ -9,8 +9,8 @@ import android.text.Editable;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,11 +30,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView wordTextView;
     private String WordToSet;
     private MediaPlayer mp;
-    private Button button;
     private Editable textCaptured;
+    private ImageView errorCat;
 
 
     public void ApiConnection(){
+        errorCat.setVisibility(View.INVISIBLE);
         OkHttpClient client = new OkHttpClient();
         String url = "https://mashape-community-urban-dictionary.p.rapidapi.com/define?term="+textCaptured;
         Request request = new Request.Builder()
@@ -81,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             resultsTextView.setMovementMethod(new ScrollingMovementMethod());
                             if(textCaptured.toString().equals("")){
-                                resultsTextView.setText("Aww, sorry, looks like your input is empty.");
-                                wordTextView.setText(":(");
+                                wordTextView.setText("why u do dis");
+                                resultsTextView.setText("");
+                                errorCat.setVisibility(View.VISIBLE);
 
                             }
                             else{
@@ -110,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
         resultsTextView = findViewById(R.id.resultsTextView);
         editText = findViewById(R.id.editText);
         wordTextView = findViewById(R.id.wordTextView);
-        button = findViewById(R.id.button);
         mp = MediaPlayer.create(this, R.raw.click);
         textCaptured = editText.getText();
+        errorCat = findViewById(R.id.errorCat);
     }
 }

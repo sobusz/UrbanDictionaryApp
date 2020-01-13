@@ -8,6 +8,18 @@
     android:background="#34495e"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/errorCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:srcCompat="@drawable/cat" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -70,9 +82,9 @@
         android:id="@+id/wordTextView"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:autoSizeTextType="uniform"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
+        android:autoSizeTextType="uniform"
         android:textAlignment="center"
         android:textColor="#27ae60"
         app:layout_constraintEnd_toStartOf="@+id/button"
