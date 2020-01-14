@@ -73,6 +73,7 @@
         android:onClick="searchWord"
         android:text="@android:string/search_go"
         android:textColor="#ecf0f1"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.684"
         app:layout_constraintStart_toStartOf="parent"
