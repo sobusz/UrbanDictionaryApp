@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                             Log.i("JSON", word+" " +definition);
 
-                            TextToSet = total.append(i+1 + ")  " + definition + "\n ______________________________________ \n \n");
+                            TextToSet = total.append(i+1 + ")  " + definition + "\n _________________________________ \n \n");
                             WordToSet = word;
                         }
                         Log.d("TOTAL", total.toString());
